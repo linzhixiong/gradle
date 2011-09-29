@@ -1,0 +1,58 @@
+defaultTasks 'sayHello','sayGoodbye'
+
+task sayHello << {
+println "Hello guys!"
+}
+
+task sayGoodbye<<{
+ println "GoodBye!"
+}
+
+
+// sayHello.doLast{
+//sayGoodbye.execute()
+//}
+
+
+task intro(dependsOn:sayHello)<<{
+println "I am gradle!"
+}
+
+
+
+
+100.times{
+counter->
+task "task$counter" <<{
+println "task$counter was called"
+}
+}
+ task meeting <<{
+println "meeting ......"
+}
+
+meeting.doFirst{
+sayHello.execute()
+}
+
+meeting.doLast{
+sayGoodbye.execute()
+}
+
+
+
+task object
+object.title="linzhixiong"
+object.property="this is a property named property!"
+task main<<{
+println object.property
+}
+
+
+gradle.taskGraph.whenReady {taskGraph ->
+    if (taskGraph.hasTask(':release')) {
+        version = '1.0'
+    } else {
+        version = '1.0-SNAPSHOT'
+    }
+}
